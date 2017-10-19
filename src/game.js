@@ -11,19 +11,20 @@ export default class Game {
   constructor() {
     this.paddle = new Paddle();
     this.paddleDirection = null;
+    this.thrustersOn = false;
     this.ball = new Ball();
     this.ballDirection = [0, -1];
     this.bricks = new Bricks();
     this.over = false;
     // Create the back buffer canvas
     this.backBufferCanvas = document.createElement('canvas');
-    this.backBufferCanvas.width = 100;
-    this.backBufferCanvas.height = 100;
+    this.backBufferCanvas.width = 500;
+    this.backBufferCanvas.height = 500;
     this.backBufferContext = this.backBufferCanvas.getContext('2d');
     // Create the screen buffer canvas
     this.screenBufferCanvas = document.createElement('canvas');
-    this.screenBufferCanvas.width = 100;
-    this.screenBufferCanvas.height = 100;
+    this.screenBufferCanvas.width = 500;
+    this.screenBufferCanvas.height = 500;
     document.body.appendChild(this.screenBufferCanvas);
     this.screenBufferContext = this.screenBufferCanvas.getContext('2d');
     // Bind class functions
@@ -56,22 +57,31 @@ export default class Game {
       case 'ArrowRight':
         this.paddleDirection = 'right';
         break;
+      case 'w':
+      case 'ArrowUp':
+        this.thrustersOn = true;
+    }
+    if(event.keyCode == 32){
+      console.log('fire!!!');
     }
   }
   handleKeyUp(event) {
     this.paddleDirection = null;
+    if(event.key == 'w' || event.key == 'ArrowUp'){
+      this.thrustersOn = false;
+    }
   }
   /** @method update
     * Updates the game world.
     */
   update() {
-    this.paddle.update(this.paddleDirection);
-    var ballLocation = this.ball.update(this.ballDirection);
-    if(ballLocation[1] <= 50) this.ballDirection = this.bricks.check(ballLocation, this.ballDirection); //returns same direction if no bounce
-    if(ballLocation[1] == 96) this.ballDirection = this.paddle.check(ballLocation, this.ballDirection);
-    if(ballLocation[0] < 0 || ballLocation[0] > 99) this.ballDirection = [this.ballDirection[0]*-1, this.ballDirection[1]];
-    if(ballLocation[1] < 0) this.ballDirection = [this.ballDirection[0], this.ballDirection[1]*-1];
-    if(ballLocation[1] > 100)this.endGame(this.bricks.score());
+    this.paddle.update(this.paddleDirection, this.thrustersOn);
+    //var ballLocation = this.ball.update(this.ballDirection);
+    //if(ballLocation[1] <= 50) this.ballDirection = this.bricks.check(ballLocation, this.ballDirection); //returns same direction if no bounce
+    //if(ballLocation[1] == 96) this.ballDirection = this.paddle.check(ballLocation, this.ballDirection);
+    //if(ballLocation[0] < 0 || ballLocation[0] > 99) this.ballDirection = [this.ballDirection[0]*-1, this.ballDirection[1]];
+    //if(ballLocation[1] < 0) this.ballDirection = [this.ballDirection[0], this.ballDirection[1]*-1];
+    //if(ballLocation[1] > 100)this.endGame(this.bricks.score());
   }
   /** @method render
     * Renders the game world

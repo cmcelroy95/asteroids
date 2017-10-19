@@ -1,7 +1,7 @@
 {
   "name": "snake",
   "version": "1.0.0",
-  "description": "A snake arcade game implementation.",
+  "description": "A asteroids arcade game implementation.",
   "main": "game.js",
   "scripts": {
     "start": "react-scripts start",
