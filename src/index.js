@@ -1,4 +1,4 @@
 import Game from './game';
-import './breakout.css';
+import './astroids.css';
 
 const game = new Game();

@@ -1,9 +1,9 @@
-// Snake.js
+// Ship.js
 
-/** @class Paddle
+/** @class Ship
   * The paddle in a Breakout game
   */
-export default class Paddle {
+export default class Ship {
   constructor() {
     this.location = [250,250];
     this.velocity = [0,0];
@@ -16,6 +16,16 @@ export default class Paddle {
     this.render = this.render.bind(this);
   }
 
+  getVelocity(){
+    return this.velocity;
+  }
+  getLocation(){
+    return this.location;
+  }
+  getDirection(){
+    return this.direction;
+  }
+
   check() {
 
   }
@@ -23,18 +33,15 @@ export default class Paddle {
   //rotate: -1: counterclockwise, 0: false, 1: counterclockwise
   //thrusters: on/off true/false
   update(rotate, thrusters) {
-    this.check()
-
     //update direction
-    if(rotate == 'left'){
+    if(rotate === 'left'){
       this.direction -= .1;
       if(this.direction < 0) this.direction += (2 * Math.PI);
     }
-    else if(rotate == 'right'){
+    else if(rotate === 'right'){
       this.direction += .1;
       if(this.direction > 2 * Math.PI) this.direction -= (2 * Math.PI);
     }
-
     //thrusters changes velocity if true, do some math
     var xForce = 0;
     var yForce = 0;
@@ -42,7 +49,6 @@ export default class Paddle {
       xForce = this.thrusterForce * Math.cos(this.direction);
       yForce = this.thrusterForce * Math.sin(this.direction);
     }
-
     //update velocity
     var velocityX = this.velocity[0]+xForce;
     if (velocityX < 0) velocityX += this.drag;
@@ -51,36 +57,32 @@ export default class Paddle {
     if (velocityY < 0) velocityY += this.drag;
     if (velocityY > 0) velocityY -= this.drag;
     this.velocity = [velocityX, velocityY];
-
     //update location
     this.location = [this.location[0]+this.velocity[0], this.location[1]+this.velocity[1]];
+    if(this.location[0] > 500) this.location[0] = 0;
+    if(this.location[0] < 0) this.location[0] = 500;
+    if(this.location[1] > 500) this.location[1] = 0;
+    if(this.location[1] < 0) this.location[1] = 500;
+    //check for events
+    this.check();
   }
 
   render(context) {
-    var shipSize = 20;
-
-    //get the 3 corners of the ships triangle show.bs.collapse
+    var shipSize = 10;
     var location = this.location;
+    //get the 3 corners of the ships triangle show.bs.collapse
     var frontDirection = this.direction;
     var front = [location[0] + shipSize * Math.cos(frontDirection), location[1] + shipSize * Math.sin(frontDirection)];
     var backLeftDirection = frontDirection + (.8 * Math.PI);
     var backLeft = [location[0] + shipSize * Math.cos(backLeftDirection), location[1] + shipSize * Math.sin(backLeftDirection)]
     var backRightDirection = frontDirection - (.8 * Math.PI);
     var backRight = [location[0] + shipSize * Math.cos(backRightDirection), location[1] + shipSize * Math.sin(backRightDirection)]
-
     // the triangle
     context.beginPath();
     context.moveTo(front[0], front[1]);
     context.lineTo(backLeft[0], backLeft[1]);
     context.lineTo(backRight[0], backRight[1]);
     context.closePath();
-
-    // the outline
-    context.lineWidth = 1;
-    context.strokeStyle = '#666666';
-    context.stroke();
-
-    // the fill color
     context.fillStyle = "#FFCC00";
     context.fill();
   }
