@@ -5,7 +5,6 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 canvas {
   position: relative;
   width: 500px;
@@ -13,19 +12,46 @@ canvas {
   margin: 20px;
   border: 1px solid black;
   box-shadow: 5px 5px #777;
-  image-rendering: pixelated;
 }
-
-div {
+#end-game {
   position: absolute;
   top: 230px;
   left: 160px;
   width: 200px;
   height: 70px;
   border: 5px solid black;
-  box-shadow: 5px 5px #777;
   background-color: white;
   text-align: center;
   font-size: 30px;
   z-index: 1000;
+}
+#hearts-container {
+  position: absolute;
+  top: 175px;
+  left: 550px;
+  width: 50px;
+  height: 160px;
+  border: 5px solid black;
+  text-align: center;
+  box-shadow: 5px 5px #777;
+}
+#score-box {
+  position: absolute;
+  top: 360px;
+  left: 550px;
+  width: 50px;
+  height: 40px;
+  border: 5px solid black;
+  text-align: center;
+  box-shadow: 5px 5px #777;
+}
+#lvl-box {
+  position: absolute;
+  top: 110px;
+  left: 550px;
+  width: 50px;
+  height: 40px;
+  border: 5px solid black;
+  text-align: center;
+  box-shadow: 5px 5px #777;
 }

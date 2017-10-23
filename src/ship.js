@@ -1,19 +1,48 @@
-// Ship.js
-
 /** @class Ship
   * The paddle in a Breakout game
   */
 export default class Ship {
   constructor() {
+    this.lives = 3;
     this.location = [250,250];
     this.velocity = [0,0];
     this.direction = 0; //in radians
-    this.drag = .02; //the ammound subtracted from velocity per cycle
+    this.drag = .01; //the ammound subtracted from velocity per cycle
     this.thrusterForce = .1;
+    this.invincibleFramesLeft = 0;
+
+    //create hearts
+    this.heartsDiv = document.createElement("div");
+    this.heartsDiv.id = "hearts-container";
+    for(var i=1; i<=3; i++){
+      var heartDiv = document.createElement("div");
+      heartDiv.id = "heart" + i;
+      var heart = document.createElement("img");
+      heart.setAttribute("src", "heart.jpg");
+      heart.setAttribute("height", "50");
+      heart.setAttribute("width", "50");
+      heartDiv.appendChild(heart);
+      this.heartsDiv.appendChild(heartDiv);
+    }
+    document.body.appendChild(this.heartsDiv);
 
     // bind class methods
     this.update = this.update.bind(this);
     this.render = this.render.bind(this);
+  }
+
+  makeInvincible() {
+    this.invincibleFramesLeft = 100;
+  }
+
+  hit(){
+    if(this.invincibleFramesLeft > 0) return;
+    this.lives--;
+    this.heartsDiv.removeChild(this.heartsDiv.lastChild);
+    if(this.lives == 0){
+      return true;
+    }
+    this.makeInvincible();
   }
 
   getVelocity(){
@@ -24,10 +53,6 @@ export default class Ship {
   }
   getDirection(){
     return this.direction;
-  }
-
-  check() {
-
   }
 
   //rotate: -1: counterclockwise, 0: false, 1: counterclockwise
@@ -63,11 +88,15 @@ export default class Ship {
     if(this.location[0] < 0) this.location[0] = 500;
     if(this.location[1] > 500) this.location[1] = 0;
     if(this.location[1] < 0) this.location[1] = 500;
-    //check for events
-    this.check();
   }
 
   render(context) {
+    if(this.invincibleFramesLeft != 0){
+      this.invincibleFramesLeft--;
+      if(this.invincibleFramesLeft % 3 == 0) {
+        return;
+      }
+    }
     var shipSize = 10;
     var location = this.location;
     //get the 3 corners of the ships triangle show.bs.collapse

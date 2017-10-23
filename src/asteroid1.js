@@ -12,23 +12,31 @@ export default class Asteroid1 {
     this.pivots = pivots;
   }
 
+  remove() {
+    this.location[0] = "null";
+    this.location[1] = "null";
+    this.velocity[0] = 0;
+    this.velocity[1] = 0;
+  }
+
   getLocation() {
     return this.location;
   }
 
-  checkBulletCollision(bulletLocation){ //do some math
-    //for(var i=0; i<this.pivots.length; i++){
-      //var pivot = this.pivots[i];
-      //var nextPivot = this.pivots[i+1];
-      //if(i==this.pivots.length-1) nextPivot = this.pivots[0];
-      //var slope = (nextPivot[1]-pivot[1])/(nextPivot[0]-pivot[0]);
-      //c = y - mx
-      //var cAstro = this.location[1] - slope*this.location[0];
-      //var cBullet = bulletLocation[1] - slope*bulletLocation[0][0];
-    //}
-    if(Math.abs(this.location[0]-bulletLocation[0]) < this.size*.8 && Math.abs(this.location[1]-bulletLocation[1]) < this.size*.8){
-      console.log("destroy!!!");
-    }
+  setLocation(location) {
+    this.location = location;
+  }
+
+  getVelocity() {
+    return this.velocity;
+  }
+
+  setVelocity(velocity) {
+    this.velocity = velocity;
+  }
+
+  getSize() {
+    return this.size;
   }
 
   update() {
